@@ -45,7 +45,9 @@ describe('Binary TRIE', () => {
     trie.insert('pizza');
     trie.select('pinhead');
     trie.suggest('pin');
-    console.log(trie.suggest('pin'));
+    console.log('full array', trie.suggest('pin'));
+    trie.delete('pinecone')
+    console.log('array w/delete', trie.suggest('pin'))
     //expect(actual).to.eq(expected);
   })
 
