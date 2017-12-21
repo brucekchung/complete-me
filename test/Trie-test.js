@@ -6,15 +6,6 @@ const Node = require('../lib/Node.js')
 describe('TRIE', () => {
   let trie;
 
-  function populate() {
-    const fs = require('fs');
-    const text = "/usr/share/dict/words";
-    const dictionary = fs.readFileSync(text).toString().trim().split('\n');
-    dictionary.forEach((word)=>{
-      trie.insert(word);
-    });
-  }
-
   beforeEach(() => {
     trie = new Trie();
   });
@@ -32,7 +23,7 @@ describe('TRIE', () => {
 
   it('should be able to count a lot of words', () => {
     expect(trie.count).to.eq(0);
-    populate();
+    trie.populate();
     expect(trie.count).to.eq(235886);
   })
 
@@ -55,8 +46,18 @@ describe('TRIE', () => {
     expect(actual).to.deep.eq(expected)
   })
 
+  it('should not increase count for duplicate words', () => {
+    trie.insert('pinecone');
+    trie.insert('pinhead');
+
+    expect(trie.count).to.deep.eq(2)
+
+    trie.insert('pinhead')
+    expect(trie.count).to.deep.eq(2)
+  })
+
   it('should should suggest words from the dictionary', () => {
-    populate();
+    trie.populate();
 
     const actual = trie.suggest('charg')
     const expected = ['chargeless',
